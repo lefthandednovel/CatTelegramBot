@@ -2,24 +2,18 @@ import asyncio
 import logging
 from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
-from aiogram.enums import ParseMode
 from config import BOT_TOKEN
+from aiogram.fsm.storage.memory import MemoryStorage
 
-# Импортируем роутеры
-from handlers import start_help, cats
+from handlers import start, cats
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s | %(levelname)s | %(message)s")
 
 async def main():
-    # Настройка бота
-    bot = Bot(
-        token=BOT_TOKEN,
-        default=DefaultBotProperties(parse_mode=ParseMode.HTML)
-    )
+    bot = Bot(token=BOT_TOKEN )
     
-    # Создаём диспетчер и подключаем роутеры
-    dp = Dispatcher()
-    dp.include_router(start_help.router)
+    dp = Dispatcher(storage=MemoryStorage())
+    dp.include_router(start.router)
     dp.include_router(cats.router)
     
     logging.info(" Бот запущен...")
